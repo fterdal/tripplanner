@@ -31,11 +31,6 @@ router.get('/', function(req, res, next) {
       activities: activities,
       restaurants: restaurants
     });
-    // res.json({
-    //   hotels: hotels,
-    //   activities: activities,
-    //   restaurants: restaurants
-    // });
   })
   .catch(next);
 

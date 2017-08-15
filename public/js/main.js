@@ -2,18 +2,111 @@ $(function init() {
   initializeMap();
   setupOptions();
   let itinerary = new Itinerary;
+  renderPage(itinerary);
 });
+
+function renderPage(itinerary) {
+    // TODO
+    // Clear the DOM. Use jQuery .empty()
+    reset();
+
+    // Redraw the DOM
+    const removeDayBtn = `<button class="btn btn-xs btn-danger remove btn-circle">x</button>`;
+    const addDayBtn = `<button class="btn btn-circle day-btn" id="day-add">+</button>`;
+    const itineraryItem = `
+    <div class="itinerary-item">
+      <span class="title">Wyndham Grand Chicago Riverfront</span>
+      <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+    </div>`;
+    $('.itinerary-panel').html(getBasePanel());
+
+
+    // attachEventHandlers();
+}
+
+function reset() {
+  $(".itinerary-panel").empty();
+}
+
+function getBasePanel() {
+  return  `
+    <h3>
+      <span id="day-title">
+        <span>Day 1</span>
+        <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+      </span>
+    </h3>
+    <div class="panel panel-default">
+      <div class="panel-heading day-button-panel">
+        <div class="day-buttons">
+        </div>
+      </div>
+      <div class="panel-body" id="itinerary">
+        <div>
+          <h4>My Hotel</h4>
+          <ul class="list-group">
+          </ul>
+        </div>
+        <div>
+          <h4>My Restaurants</h4>
+          <ul class="list-group">
+          </ul>
+        </div>
+        <div>
+          <h4>My Activities</h4>
+          <ul class="list-group">
+          </ul>
+        </div>
+      </div>
+    </div>
+  `;
+
+
+}
+
+function attachEventHandlers() {
+  /*
+    - 3 buttons on options to select hotel, restaurant, activity
+    - plus button to add a day
+    - red X to remove current day
+    - arbitrarily many red X to remove {hotel, restaurant, activities}
+    - click on day to switch current day
+  */
+  $("select").change( function() {
+    console.log(this.value);
+  })
+}
+
+
 
 class Itinerary {
 
   constructor() {
-    this.current_day = -1;
+    this.current_day = 0;
     this.days = [];
+    this.days.push(new Day);
   }
 
-  addDay() {  }
-  removeDay() {  }
-  switchDays(newDay) { this.current_day = newDay }
+  addDay() { this.days.push(new Day); }
+  removeDay(idx) {
+    if (this.days.length <= 1) return;
+    this.days.splice(idx, 1);
+    if (this.current_day > 0) {
+      this.current_day--;
+    }
+  }
+  switchDays(newDayIdx) { this.current_day = newDayIdx; }
+  // TODO: Add wrappers around the current day, so that itinerary can
+  // call its methods
+  // setHotel(hotel) {
+  //   // TODO
+  //   this.days[current_day].setHotel()
+  // }
+  // removeHotel() { this.hotel = null; }
+  // addActivity(activity) { this.activities[activity.id] = activity; }
+  // removeActivity(activityId) { delete this.activities[activityId]; }
+  // addRestaurant(restaurant) { this.restaurants[restaurant.id] = restaurant; }
+  // removeRestaurant(restaurantId) { delete this.restaurants[restaurantId]; }
 
 }
 
