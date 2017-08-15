@@ -16,24 +16,27 @@
           <div>
             <h4>Hotels</h4>
             <select data-type="hotel" id="hotel-choices">
-              <option>Wyndham Grand Chicago Riverfront</option>
-              <option>...</option>
+              {% for hotel in hotels %}
+              <option value="{{hotel.name}}">{{hotel.name}}</option>
+              {% endfor %}}
             </select>
             <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
           <div>
             <h4>Restaurants</h4>
             <select data-type="restaurant" id="restaurant-choices">
-              <option>Alinea</option>
-              <option>...</option>
+              {% for restaurant in restaurants %}
+              <option value="{{restaurant.name}}">{{restaurant.name}}</option>
+              {% endfor %}}
             </select>
             <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
           <div>
             <h4>Activities</h4>
             <select data-type="activity" id="activity-choices">
-              <option>Shedd Aquarium</option>
-              <option>...</option>
+              {% for activity in activities %}
+              <option value="{{activity.name}}">{{activity.name}}</option>
+              {% endfor %}}
             </select>
             <button data-action="add" class="btn btn-primary btn-circle pull-right">+</button>
           </div>
