@@ -1,6 +1,7 @@
 $(function init() {
   initializeMap();
   setupOptions();
+  let itinerary = new Itinerary;
 });
 
 class Itinerary {
@@ -20,28 +21,28 @@ class Day {
 
   constructor() {
     this.hotel = null;
-    this.restaurants = [];
-    this.activities = [];
+    this.restaurants = {};
+    this.activities = {};
   }
 
-  setHotel() {  }
+  setHotel(hotel) { this.hotel = hotel; }
   removeHotel() { this.hotel = null; }
-  addActivity() {  }
-  removeActivity() {  }
-  addRestaurant() {  }
-  removeRestaurant() {  }
+  addActivity(activity) { this.activities[activity.id] = activity; }
+  removeActivity(activityId) { delete this.activities[activityId]; }
+  addRestaurant(restaurant) { this.restaurants[restaurant.id] = restaurant; }
+  removeRestaurant(restaurantId) { delete this.restaurants[restaurantId]; }
 
 }
 
 function setupOptions() {
   hotels.forEach( hotel => {
-    $('#hotel-choices').append(`<option value="${hotel.id}">${hotel.name}</option>`);
+    $('#hotel-choices').append(`<option id="hotel-${hotel.id}">${hotel.name}</option>`);
   })
   restaurants.forEach( restaurant => {
-    $('#restaurant-choices').append(`<option value="${restaurant.id}">${restaurant.name}</option>`);
+    $('#restaurant-choices').append(`<option id="restaurant-${restaurant.id}">${restaurant.name}</option>`);
   })
   activities.forEach( activity => {
-    $('#activity-choices').append(`<option value="${activity.id}">${activity.name}</option>`);
+    $('#activity-choices').append(`<option id="activity-${activity.id}">${activity.name}</option>`);
   })
 }
 
