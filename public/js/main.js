@@ -12,13 +12,13 @@ function renderPage(itinerary) {
 
     // Redraw the DOM
     const removeDayBtn = `<button class="btn btn-xs btn-danger remove btn-circle">x</button>`;
-    const addDayBtn = `<button class="btn btn-circle day-btn" id="day-add">+</button>`;
     const itineraryItem = `
     <div class="itinerary-item">
       <span class="title">Wyndham Grand Chicago Riverfront</span>
       <button class="btn btn-xs btn-danger remove btn-circle">x</button>
     </div>`;
     $('.itinerary-panel').html(getBasePanel());
+    $('.current-hotel').html(getItineraryHotel(itinerary));
 
 
     // attachEventHandlers();
@@ -27,6 +27,19 @@ function renderPage(itinerary) {
 function reset() {
   $(".itinerary-panel").empty();
 }
+
+function getItineraryHotel(itinerary) {
+  let currentHotel = itinerary.days[itinerary.current_day].hotel;
+  if (!currentHotel) return '';
+  let baseHtml = `
+  <div class="itinerary-item">
+    <span class="title">${hotel.name}</span>
+    <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+  </div>`;
+  return baseHtml;
+}
+function getItineraryRestaurants(itinerary) { }
+function getItineraryActivities(itinerary) { }
 
 function getBasePanel() {
   return  `
@@ -39,12 +52,13 @@ function getBasePanel() {
     <div class="panel panel-default">
       <div class="panel-heading day-button-panel">
         <div class="day-buttons">
+          <button class="btn btn-circle day-btn" id="day-add">+</button>
         </div>
       </div>
       <div class="panel-body" id="itinerary">
         <div>
           <h4>My Hotel</h4>
-          <ul class="list-group">
+          <ul class="list-group current-hotel">
           </ul>
         </div>
         <div>
