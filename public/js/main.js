@@ -2,6 +2,9 @@ $(function init() {
   initializeMap();
   setupOptions();
   let itinerary = new Itinerary;
+  itinerary.addDay();
+  itinerary.current_day = 1;
+  itinerary.addDay();
   renderPage(itinerary);
 });
 
@@ -19,13 +22,31 @@ function renderPage(itinerary) {
     </div>`;
     $('.itinerary-panel').html(getBasePanel());
     $('.current-hotel').html(getItineraryHotel(itinerary));
-
+    $('.day-buttons').html(getItineraryDays(itinerary));
+    $('#day-title').html(getDayTitle(itinerary));
 
     // attachEventHandlers();
 }
 
 function reset() {
   $(".itinerary-panel").empty();
+}
+
+function getDayTitle(itinerary) {
+    return `<span>Day ${itinerary.current_day+1}</span>
+   <button class="btn btn-xs btn-danger remove btn-circle">x</button>`;
+}
+
+function getItineraryDays(itinerary) {
+  let days = '';
+  for (let i = 0; i<itinerary.days.length; i++) {
+    let current_day = '';
+    if (i === itinerary.current_day) {
+      current_day = 'current-day';
+    }
+    days += `<button class="btn btn-circle day-btn ${current_day}">${i+1}</button>`;
+  }
+  return days + '<button class="btn btn-circle day-btn" id="day-add">+</button>';
 }
 
 function getItineraryHotel(itinerary) {
@@ -45,14 +66,11 @@ function getBasePanel() {
   return  `
     <h3>
       <span id="day-title">
-        <span>Day 1</span>
-        <button class="btn btn-xs btn-danger remove btn-circle">x</button>
       </span>
     </h3>
     <div class="panel panel-default">
       <div class="panel-heading day-button-panel">
         <div class="day-buttons">
-          <button class="btn btn-circle day-btn" id="day-add">+</button>
         </div>
       </div>
       <div class="panel-body" id="itinerary">
@@ -96,7 +114,7 @@ function attachEventHandlers() {
 class Itinerary {
 
   constructor() {
-    this.current_day = 0;
+    this.current_day = 0; // Index of current day
     this.days = [];
     this.days.push(new Day);
   }
