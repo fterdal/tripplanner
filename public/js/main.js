@@ -2,15 +2,14 @@ $(function init() {
   initializeMap();
   setupOptions();
   let itinerary = new Itinerary;
-  itinerary.addDay();
-  itinerary.current_day = 1;
-  itinerary.addDay();
-  renderPage(itinerary);
+  // itinerary.addDay();
+  // itinerary.current_day = 1;
+  // itinerary.addDay();
+  // itinerary.days[0].addActivity(activities[0]);
+  // renderPage(itinerary);
 });
 
 function renderPage(itinerary) {
-    // TODO
-    // Clear the DOM. Use jQuery .empty()
     reset();
 
     // Redraw the DOM
@@ -24,6 +23,9 @@ function renderPage(itinerary) {
     $('.current-hotel').html(getItineraryHotel(itinerary));
     $('.day-buttons').html(getItineraryDays(itinerary));
     $('#day-title').html(getDayTitle(itinerary));
+    $('.restaurant-list').html(getItineraryRestaurants(itinerary));
+    $('.activities-list').html(getItineraryActivities(itinerary));
+
 
     // attachEventHandlers();
 }
@@ -52,15 +54,40 @@ function getItineraryDays(itinerary) {
 function getItineraryHotel(itinerary) {
   let currentHotel = itinerary.days[itinerary.current_day].hotel;
   if (!currentHotel) return '';
-  let baseHtml = `
+  let html = `
   <div class="itinerary-item">
-    <span class="title">${hotel.name}</span>
+    <span class="title">${currentHotel.name}</span>
     <button class="btn btn-xs btn-danger remove btn-circle">x</button>
   </div>`;
-  return baseHtml;
+  return html;
 }
-function getItineraryRestaurants(itinerary) { }
-function getItineraryActivities(itinerary) { }
+
+function getItineraryRestaurants(itinerary) {
+  let html = '';
+  let restaurants = itinerary.currentRestaurants();
+  for (let key in restaurants) {
+    html += `
+    <div class="itinerary-item">
+      <span class="title">${restaurants[key].name}</span>
+      <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+    </div>`;
+  }
+  return html;
+}
+
+function getItineraryActivities(itinerary) {
+  let html = '';
+  let activities = itinerary.currentActivities();
+  for (let key in activities) {
+    console.log(activities[key]);
+    html += `
+    <div class="itinerary-item">
+      <span class="title">${activities[key].name}</span>
+      <button class="btn btn-xs btn-danger remove btn-circle">x</button>
+    </div>`;
+  }
+  return html;
+}
 
 function getBasePanel() {
   return  `
@@ -81,12 +108,12 @@ function getBasePanel() {
         </div>
         <div>
           <h4>My Restaurants</h4>
-          <ul class="list-group">
+          <ul class="list-group restaurant-list">
           </ul>
         </div>
         <div>
           <h4>My Activities</h4>
-          <ul class="list-group">
+          <ul class="list-group activities-list">
           </ul>
         </div>
       </div>
@@ -128,18 +155,10 @@ class Itinerary {
     }
   }
   switchDays(newDayIdx) { this.current_day = newDayIdx; }
-  // TODO: Add wrappers around the current day, so that itinerary can
-  // call its methods
-  // setHotel(hotel) {
-  //   // TODO
-  //   this.days[current_day].setHotel()
-  // }
-  // removeHotel() { this.hotel = null; }
-  // addActivity(activity) { this.activities[activity.id] = activity; }
-  // removeActivity(activityId) { delete this.activities[activityId]; }
-  // addRestaurant(restaurant) { this.restaurants[restaurant.id] = restaurant; }
-  // removeRestaurant(restaurantId) { delete this.restaurants[restaurantId]; }
-
+  currentDay() { return this.days[this.current_day]; }
+  currentHotel() { return this.currentDay().hotel; }
+  currentRestaurants() { return this.currentDay().restaurants; }
+  currentActivities() { return this.currentDay().activities; }
 }
 
 class Day {
